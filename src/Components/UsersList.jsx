@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import JobList from './JobList';
 import ApplicationsList from './ApplicationsList';
-import { fetchUsersAPI } from '../services/allApi';
+import { fetchUsersAPI } from '../services/apiAll';
 
 
 const UsersList = ({ isCandidate }) => {

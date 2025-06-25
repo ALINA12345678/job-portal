@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getStatsAPI } from '../services/allApi'; // New service
+import { getStatsAPI } from '../services/apiAll'; // New service
 
 function Overview({ onSelect }) {
   const [stats, setStats] = useState({

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import jsPDF from 'jspdf';
 import { toast, ToastContainer } from 'react-toastify';
-import { saveProfileAPI, getProfileAPI } from '../services/allApi'; // Add these in allApi.js
-
+import { saveProfileAPI, getProfileAPI } from '../services/apiAll'; 
 
 const ProfileForm = () => {
     const [formData, setFormData] = useState({

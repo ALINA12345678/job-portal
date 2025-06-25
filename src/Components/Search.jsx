@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import JobList from './JobList';
-import { getJobsAPI } from '../services/allApi'; // ✅ Import API
+import { getJobsAPI } from '../services/apiAll'; // ✅ Import API
 import { toast } from 'react-toastify';
 
 function JobSearch({ setIsSearching }) {

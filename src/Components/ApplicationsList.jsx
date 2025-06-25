@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getApplicationsAPI } from '../services/allApi';  // You'll create this
+import { getApplicationsAPI } from '../services/apiAll';  
 
 const Applications = ({ jobId = null }) => {
   const [applications, setApplications] = useState([]);

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, useNavigate } from 'react-router-dom';
 import Header from '../Components/Header';
 import { toast, ToastContainer } from 'react-toastify';
-import { loginAPI, registerAPI } from '../services/allApi';
+import { loginAPI, registerAPI } from '../services/apiAll';
 
 
 

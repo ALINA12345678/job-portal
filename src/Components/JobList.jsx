@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import JobDetails from './JobDetails';
 import Applications from './ApplicationsList';
 import { toast, ToastContainer } from 'react-toastify';
-import { deleteJobAPI, getJobsAPI, applyJobAPI, getProfileAPI } from '../services/allApi';
+import { deleteJobAPI, getJobsAPI, applyJobAPI, getProfileAPI } from '../services/apiAll';
 
 const JobList = ({ showDetails = false, filterByEmployer = null, filteredjobs = null }) => {
     const [jobs, setJobs] = useState([]);

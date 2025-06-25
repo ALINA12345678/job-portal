@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { postJobAPI } from '../services/allApi';
+import { postJobAPI } from '../services/apiAll';
 
 const PostJob = () => {
   const [job, setJob] = useState({
