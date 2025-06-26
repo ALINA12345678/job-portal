@@ -14,13 +14,19 @@ const Dashboard = () => {
   const [role, setRole] = useState(null);
   const [selectedOption, setSelectedOption] = useState('home');
   const [employer, setEmployer] = useState('');
+  const [user, setUser] = useState('');
   const [allApplications, setAllApplications] = useState([]);
+  const capitalizeFirst = str => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
   // Auth & role check
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     const role = sessionStorage.getItem('role');
-    const name = sessionStorage.getItem('name');
+    const uname = sessionStorage.getItem('name');
+   setUser(capitalizeFirst(uname));
+
+    
+
 
     if (!token || !role) {
 
@@ -28,7 +34,7 @@ const Dashboard = () => {
       return;
     }
     setRole(role);
-    if (role === 'employer') setEmployer(name);
+    if (role === 'employer') setEmployer(uname);
   }, [navigate]);
 
   // Refresh application data only when needed
@@ -66,7 +72,7 @@ const Dashboard = () => {
             </div>
           );
         default:
-          return <h4 className="text-muted">👋 Welcome, Employer! Select an option from the sidebar.</h4>;
+          return <h4 className="text-muted">👋 Welcome, {user}! Select an option from the sidebar.</h4>;
       }
     } else {
       switch (selectedOption) {
@@ -82,7 +88,7 @@ const Dashboard = () => {
             </div>
           );
         default:
-          return <h4 className="text-muted">👋 Welcome, Candidate! Select an option from the sidebar.</h4>;
+          return <h4 className="text-muted">👋 Welcome, {user}! Select an option from the sidebar.</h4>;
       }
     }
   };

@@ -1,35 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import JobList from './JobList';
 import ApplicationsList from './ApplicationsList';
-import { fetchUsersAPI } from '../services/apiAll';
-
+import { fetchUsersAPI, deleteUserAPI } from '../services/apiAll';
+import { toast } from 'react-toastify';
 
 const UsersList = ({ isCandidate }) => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const currentUser = {
-      name: sessionStorage.getItem('name') || 'Guest',
-      role: sessionStorage.getItem('role') || 'guest',
-      token: sessionStorage.getItem('token') || null
-    };
-
+    name: sessionStorage.getItem('name') || 'Guest',
+    role: sessionStorage.getItem('role') || 'guest',
+    token: sessionStorage.getItem('token') || null
+  };
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const role = isCandidate ? 'candidate' : 'employer';
-        
-        
-        const response = await fetchUsersAPI(role,currentUser.token);
-        setUsers(response.data || []);
-        setSelectedUser(null);
-      } catch (error) {
-        console.error('Failed to fetch users:', error);
-      }
-    };
-
-    fetchUsers();
+    fetchAllUsers();
   }, [isCandidate]);
+
+  const fetchAllUsers = async () => {
+    try {
+      const role = isCandidate ? 'candidate' : 'employer';
+      const response = await fetchUsersAPI(role, currentUser.token);
+      setUsers(response.data || []);
+      setSelectedUser(null);
+    } catch (error) {
+      console.error('Failed to fetch users:', error);
+    }
+  };
+
+  const handleDeleteUser = async (userId) => {
+    if (!window.confirm('Are you sure you want to delete this user?')) return;
+
+    try {
+      console.log(userId);
+      
+      await deleteUserAPI(userId, currentUser.token);
+      toast.success("User deleted successfully!");
+      setUsers(prev => prev.filter(u => u._id !== userId));
+    } catch (error) {
+      console.error('Failed to delete user:', error);
+      toast.error("Failed to delete user.");
+    }
+  };
 
   const title = isCandidate ? 'Candidates List' : 'Employers List';
 
@@ -54,21 +66,22 @@ const UsersList = ({ isCandidate }) => {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                
-
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {users.map(user => (
-                <tr
-                  key={user._id}
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => setSelectedUser(user)}
-                >
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  
-
+                <tr key={user._id}>
+                  <td onClick={() => setSelectedUser(user)} style={{ cursor: 'pointer' }}>{user.name}</td>
+                  <td onClick={() => setSelectedUser(user)} style={{ cursor: 'pointer' }}>{user.email}</td>
+                  <td>
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleDeleteUser(user._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -87,3 +87,17 @@ export const markAsFeaturedAPI = async (id, token) => {
     }
   );
 };
+//delete user-admin funtion
+export const deleteUserAPI = async (id, token) => {
+  return await commonAPI('DELETE', `${server_url}/users/${id}`, null, {
+    "Authorization": `Bearer ${token}`,
+    "Content-Type": "application/json"
+  });
+};
+// Update application status (Approved / Rejected)
+export const updateApplicationStatusAPI = async (applicationId, status, token) => {
+  return await commonAPI('PATCH', `${server_url}/applications/${applicationId}/status`, { status }, {
+    "Authorization": `Bearer ${token}`,
+    "Content-Type": "application/json"
+  });
+};
