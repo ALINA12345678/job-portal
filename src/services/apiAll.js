@@ -80,13 +80,13 @@ export const getProfileAPI = async (token) => {
   });
 };
 //featured
-export const markAsFeaturedAPI = async (id, token) => {
-  return commonAPI('PATCH',`${server_url}/jobs/${id}/feature`,{},{
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    }
-  );
-};
+// export const markAsFeaturedAPI = async (id, token) => {
+//   return commonAPI('PATCH',`${server_url}/jobs/${id}/feature`,{},{
+//       Authorization: `Bearer ${token}`,
+//       'Content-Type': 'application/json',
+//     }
+//   );
+// };
 //delete user-admin funtion
 export const deleteUserAPI = async (id, token) => {
   return await commonAPI('DELETE', `${server_url}/users/${id}`, null, {
@@ -97,6 +97,21 @@ export const deleteUserAPI = async (id, token) => {
 // Update application status (Approved / Rejected)
 export const updateApplicationStatusAPI = async (applicationId, status, token) => {
   return await commonAPI('PATCH', `${server_url}/applications/${applicationId}/status`, { status }, {
+    "Authorization": `Bearer ${token}`,
+    "Content-Type": "application/json"
+  });
+};
+// payment - create Razorpay order
+export const createOrderAPI = async (token) => {
+  return await commonAPI('POST', `${server_url}/payment/create-order`, {}, {
+    "Authorization": `Bearer ${token}`,
+    "Content-Type": "application/json"
+  });
+};
+
+// payment - mark job as featured
+export const markFeaturedPaidAPI = async (token, jobId) => {
+  return await commonAPI('POST', `${server_url}/payment/mark-featured`, { jobId }, {
     "Authorization": `Bearer ${token}`,
     "Content-Type": "application/json"
   });

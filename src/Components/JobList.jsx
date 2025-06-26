@@ -7,7 +7,7 @@ import {
     getJobsAPI,
     applyJobAPI,
     getProfileAPI,
-    markAsFeaturedAPI
+    createOrderAPI,markFeaturedPaidAPI
 } from '../services/apiAll';
 
 const JobList = ({ showDetails = false, filterByEmployer = null, filteredjobs = null, filterfeatured = null }) => {
@@ -115,22 +115,50 @@ const JobList = ({ showDetails = false, filterByEmployer = null, filteredjobs = 
         }
     };
 
-    const handleMarkAsFeatured = async (id, index) => {
+    const handleMarkAsFeatured = async (jobId, index) => {
+        const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY;
+        const token = sessionStorage.getItem('token');
+        
+        
+        
+
         try {
-            const response = await markAsFeaturedAPI(id, currentUser.token);
-            if (response.status === 200) {
-                const updated = [...jobs];
-                updated[index].isFeatured = true;
-                setJobs(updated);
-                toast.success("Job marked as featured!");
-            } else {
-                toast.error("Failed to mark as featured");
-            }
-        } catch (error) {
-            console.error("Error marking as featured:", error);
-            toast.error("Server error");
+            // 🧾 Step 1: create order via API
+            const response = await createOrderAPI(token);
+            const data = response.data;
+
+            // 💳 Step 2: Open Razorpay
+            const options = {
+                key: razorpayKey,
+                amount: data.amount,
+                currency: data.currency,
+                order_id: data.id,
+                name: 'Feature This Job',
+                description: 'Pay ₹199 to highlight your job',
+                handler: async () => {
+                    const confirmRes = await markFeaturedPaidAPI(token, jobId);
+
+                    if (confirmRes.status === 200) {
+                        const updated = [...jobs];
+                        updated[index].isFeatured = true;
+                        setJobs(updated);
+                        toast.success("Job marked as featured!");
+                    } else {
+                        toast.error("Failed to mark as featured");
+                    }
+                },
+                theme: { color: '#3399cc' }
+            };
+
+            const rzp = new window.Razorpay(options);
+            rzp.open();
+
+        } catch (err) {
+            console.error("Razorpay error:", err);
+            toast.error("Feature payment failed");
         }
     };
+
 
     const JobActions = ({ job, index }) => {
         const isDeadlinePassed = new Date(job.deadline) < new Date();
