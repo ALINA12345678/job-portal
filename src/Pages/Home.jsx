@@ -1,26 +1,36 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+// For navigation and linking to other pages
+import bannerImg from '../assets/office.jpg'; // adjust path as needed
+
+
 import Header from '../Components/Header';
+// Reusable header component
+
 import { Bounce, toast, ToastContainer } from 'react-toastify';
+// For showing toast messages (alerts)
+
 import JobSearch from '../Components/Search';
+import JobList from '../Components/JobList';
+// Job search bar component
 
 const Home = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // React Router hook for navigation
+
+  // Fetching user info from sessionStorage
   const name = sessionStorage.getItem('name');
   const role = sessionStorage.getItem('role');
-  const token =sessionStorage.getItem('token');
-  const isLoggedIn = !!token;
-  
+  const token = sessionStorage.getItem('token');
+  const isLoggedIn = !!token; // Boolean check if user is logged in
 
+  // Called when user clicks "Post a Job"
   const handlePostJobClick = () => {
-       
-    
     if (!isLoggedIn) {
-      navigate('/auth');
+      navigate('/auth'); // If not logged in, go to Auth page
     } else if (role === 'employer') {
-      navigate('/dashboard');
+      navigate('/dashboard'); // If employer, go to dashboard
     } else {
-      toast.warn('Only employers can post jobs.');
+      toast.warn('Only employers can post jobs.'); // Warn others
     }
   };
 
@@ -28,15 +38,21 @@ const Home = () => {
     <div>
       <Header />
 
-      {/* Hero Section */}
+      {/* Hero Section with background image */}
       <section
         className="position-relative text-white text-center py-5"
         style={{
-          background: `url('/images/job-banner.jpg') center/cover no-repeat`,
+          backgroundImage: `url(${bannerImg})`,
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
           minHeight: '400px',
         }}
+
       >
+        {/* Dark overlay for readability */}
         <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+
         <div className="position-relative container py-5">
           <h1 className="display-4 fw-bold text-shadow">Find Your Dream Job</h1>
           <p className="lead mb-4">Connecting candidates with top companies worldwide</p>
@@ -46,42 +62,18 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Search Bar */}
+      {/* Search bar below hero */}
       <JobSearch />
 
       {/* Featured Jobs */}
       <section className="py-5">
         <div className="container">
-          <h2 className="text-center mb-4">Featured Jobs</h2>
-          <div className="row g-4">
-            {[1, 2, 3].map((job) => (
-              <div key={job} className="col-md-4">
-                <div className="card h-100 shadow-sm border-0 rounded-3 hover-shadow">
-                  <div className="card-body">
-                    <h5 className="card-title">
-                      <i className="bi bi-laptop me-2 text-primary"></i>Frontend Developer
-                    </h5>
-                    <p className="text-muted mb-1">
-                      <i className="bi bi-building me-1"></i>ABC Tech
-                    </p>
-                    <p className="text-muted mb-2">
-                      <i className="bi bi-geo-alt me-1"></i>Remote
-                    </p>
-                    <p>
-                      Join a fast-paced startup building modern web apps using React and Node.js.
-                    </p>
-                    <Link to={`/jobs/${job}`} className="btn btn-outline-primary btn-sm">
-                      View Details
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <JobList filterfeatured={true} />
+          
         </div>
       </section>
 
-      {/* Employer CTA */}
+      {/* Employer CTA section */}
       <section className="bg-primary text-white text-center py-5">
         <div className="container">
           <h3 className="mb-3">
@@ -94,7 +86,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Toast Notifications */}
+      {/* Toast notifications (bottom right corner) */}
       <ToastContainer
         position="bottom-right"
         autoClose={5000}

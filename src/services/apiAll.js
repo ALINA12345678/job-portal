@@ -79,6 +79,11 @@ export const getProfileAPI = async (token) => {
     "Authorization": `Bearer ${token}`
   });
 };
-
-
-
+//featured
+export const markAsFeaturedAPI = async (id, token) => {
+  return commonAPI('PATCH',`${server_url}/jobs/${id}/feature`,{},{
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    }
+  );
+};
