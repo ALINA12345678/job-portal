@@ -1,1 +1,1 @@
-export const server_url = 'https://job-portal-server-kwht.onrender.com/';
+export const server_url = 'https://job-portal-server-kwht.onrender.com';
