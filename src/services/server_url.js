@@ -1,1 +1,1 @@
-export const server_url = 'http://localhost:5000';
+export const server_url = 'https://job-portal-server-2-u9hi.onrender.com/';
